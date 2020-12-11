@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Scanner; // Read text files
 import java.util.HashMap;
-//import org.json.simple;
+import org.json.simple;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -53,7 +53,7 @@ public class A2 {
         act1.add(actor2);
         act2.add(actor1);
 
-    }
+    } // end addEdge
 
 
 
@@ -65,9 +65,10 @@ public class A2 {
         else{
             return false;
         }
-    }
+    } // end isKey
 
 
+    // read the json movie cast file
     static void readJson(String fileName, A2 a2) throws Exception{
         System.out.println("Adding cast information to hashmap...");
 
@@ -152,7 +153,7 @@ public class A2 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    } // end readJson
 
 
 
