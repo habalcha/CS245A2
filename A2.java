@@ -1,3 +1,4 @@
+
 //javac -cp  \lib\json-simple-1.1.1.jar A2.java
 import java.lang.String;
 import java.util.*;
@@ -7,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Scanner; // Read text files
 import java.util.HashMap;
-import org.json.simple;
+//import org.json.simple;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -202,7 +203,7 @@ public class A2 {
 
             // used the intersection of sets to find shortest path when path needs less than 3 connections
             // Kevin Bacon has an average connection of 3.18 (wekipedia) so most of the searches are less than 3 connections
-//            LinkedList connectionPath = a2.connectActors(name1, name2);
+            //LinkedList connectionPath = a2.connectActors(name1, name2);
 
             // uses Dijkstra’s algorithm to find the shortest path
             LinkedList connectionPath = a2.connectShortPath(name1, name2);
@@ -258,7 +259,7 @@ public class A2 {
 
             // get the intersection of these two actor sets
             Set<String> intersection = new HashSet<String>(act1);
-            System.out.println(intersection);
+            //System.out.println(intersection);
             intersection.retainAll(act2);
 
             // add the first actor to path
@@ -364,6 +365,9 @@ public class A2 {
                         path.add(connAct);
                         path.add(actor2);
                         return path;
+                    } else {
+                        path.add(actor2);
+                        return path;
                     }
                 }
             }
@@ -374,7 +378,12 @@ public class A2 {
             while(itr.hasNext()){
                 // actor connected to actor1
                 String connAct = (String) itr.next();
-                return shortestPath(connAct, actor2, entries + 1, visited);
+                if (connAct != actor2){
+                    return shortestPath(connAct, actor2, entries + 1, visited);
+                } else {
+                    return path;
+                }
+
             }
         }
         return null;
