@@ -1,4 +1,3 @@
-
 //javac -cp  \lib\json-simple-1.1.1.jar A2.java
 import java.lang.String;
 import java.util.*;
@@ -203,7 +202,7 @@ public class A2 {
 
             // used the intersection of sets to find shortest path when path needs less than 3 connections
             // Kevin Bacon has an average connection of 3.18 (wekipedia) so most of the searches are less than 3 connections
-            //LinkedList connectionPath = a2.connectActors(name1, name2);
+//            LinkedList connectionPath = a2.connectActors(name1, name2);
 
             // uses Dijkstra’s algorithm to find the shortest path
             LinkedList connectionPath = a2.connectShortPath(name1, name2);
@@ -211,27 +210,27 @@ public class A2 {
             if(connectionPath == null){
                 System.out.println("No path was found");
 
+            } else if (name1.equals((String) connectionPath.get(0))) {
+                String path = name1;
             } else {
 
-                String path = "";
+                String path = "" ;
+
+                String first_name = name1.split(" ")[0];
+                first_name = first_name.substring(0, 1).toUpperCase() + first_name.substring(1);
+                String last_name = name1.split(" ")[1];
+                last_name = last_name.substring(0, 1).toUpperCase() + last_name.substring(1);
+                path += first_name + " " + last_name;
 
                 for(int i = 0; i < connectionPath.size(); i++){
-                    if ( i == 0){
-                        String name = (String) connectionPath.get(i);
-                        String f_name = name.split(" ")[0];
-                        f_name = f_name.substring(0, 1).toUpperCase() + f_name.substring(1);
-                        String l_name = name.split(" ")[1];
-                        l_name = l_name.substring(0, 1).toUpperCase() + l_name.substring(1);
-                        path += f_name + " " + l_name;
-                    } else {
-                        String name = (String) connectionPath.get(i);
-                        String f_name = name.split(" ")[0];
-                        f_name = f_name.substring(0, 1).toUpperCase() + f_name.substring(1);
-                        String l_name = name.split(" ")[1];
-                        l_name = l_name.substring(0, 1).toUpperCase() + l_name.substring(1);
-                        path += " --> " + f_name + " " + l_name;
-                    }
+                    String name = (String) connectionPath.get(i);
+                    String f_name = name.split(" ")[0];
+                    f_name = f_name.substring(0, 1).toUpperCase() + f_name.substring(1);
+                    String l_name = name.split(" ")[1];
+                    l_name = l_name.substring(0, 1).toUpperCase() + l_name.substring(1);
+                    path += "--> " + f_name + " " + l_name;
                 }
+
                 System.out.println("Path between " + name_1_c + " and " + name_2_c + ": \n");
                 System.out.print(path);
             }
@@ -262,19 +261,12 @@ public class A2 {
             //System.out.println(intersection);
             intersection.retainAll(act2);
 
-            // add the first actor to path
-            path.add(actor1);
-
             // if there is no interection - there is no direct connection between these two actors
             // find shortest path from their actors list
             if (intersection.size() == 0){
                 LinkedList<String> shortPath = shortestPath(actor1, actor2, 4, visited); // set entries to 4
-                if(shortPath!=null && shortPath.size() > 0){
-                    for (int i = 0; i < shortPath.size(); i++){
-                        path.add(shortPath.get(i));
-                    }
-                    return path;
-                }
+                return shortPath;
+
             } else {
 
                 // if the actors are directly connected to each other
@@ -308,17 +300,25 @@ public class A2 {
         if (actor1.equals(actor2)) {
             path.add((String) actor1);
             return path;
-        } else {
+        } else if (isConnected(actor1, actor2)){
+            path.add((String) actor2);
+            return path;
 
-            // add the first actor to path
-            path.add(actor1);
+        } else {
 
             LinkedList<String> shortPath = shortestPath(actor1, actor2, 2, visited); // set entries to 4
             if(shortPath!=null && shortPath.size() > 0){
-                for (int i = 0; i < shortPath.size(); i++){
-                    path.add(shortPath.get(i));
-                }
-                return path;
+//                for (int i = 0; i < shortPath.size(); i++){
+//                    String val  = (String) shortPath.get(i);
+//                    path.add(val);
+//                }
+//
+//                for (int i = 0; i < path.size(); i++){
+//                    System.out.println();
+//                    System.out.println(path.get(i));
+//                }
+
+                return shortPath;
             }
         }
 
@@ -365,9 +365,6 @@ public class A2 {
                         path.add(connAct);
                         path.add(actor2);
                         return path;
-                    } else {
-                        path.add(actor2);
-                        return path;
                     }
                 }
             }
@@ -378,18 +375,9 @@ public class A2 {
             while(itr.hasNext()){
                 // actor connected to actor1
                 String connAct = (String) itr.next();
-                if (connAct != actor2){
-                    return shortestPath(connAct, actor2, entries + 1, visited);
-                } else {
-                    return path;
-                }
-
+                return shortestPath(connAct, actor2, entries + 1, visited);
             }
         }
         return null;
     } // end ShortestPath;
-    } // end A2
-
-
-
-
+} // end A2
